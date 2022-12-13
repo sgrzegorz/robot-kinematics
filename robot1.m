@@ -28,9 +28,9 @@ clc;
 % hold off
 
 
-
+% Robot movement depending on drives
 % parameterNames={'theta1','theta2','theta3','theta4','theta5','theta6','a1','a2','a3','a4','a5','a6'}
-% for i=1:length(parameterNames)
+% for i=1:6
 %     figure
 %     parameter = setDefaultParameters()
 %     hold on
@@ -47,31 +47,34 @@ clc;
 % end
 
 
-
-
-
-
-
-
-
-
-
-function [parameter] =setDefaultParameters()
-    theta1 = pi/2;
-    theta2 = pi/2; 
-    theta3 = pi/2;
-    theta4 = pi/2;
-    theta5 = pi/2; 
-    theta6= pi/2; 
-    
-    a1 =0.5;
-    a2 = 0.5;
-    a3 = 0.5;
-    a4  =0.5;
-    a5 = 0.5;
-    a6=0.5;
-    parameter = [theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6];
+figure
+[x,x,x,x,x,x,a1,a2,a3,a4,a5,a6] = setDefaultParameters1();
+hold on
+step = pi/3;
+for theta1=0:step:2*pi
+    for theta2=0:step:2*pi
+        for theta3=0:step:2*pi
+            for theta4=0:step:2*pi
+                for theta5=0:step:2*pi
+                    for theta6=0:step:2*pi
+                        H = DenavitHartenberg(theta1, theta2, theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6);
+                        x = H(1,4);
+                        y =H(2,4);
+                        z = H(3,4);
+                        plot3(x,y,z, '*');
+                    end
+                end
+            end
+        end
+    end     
 end
+hold off
+
+
+
+
+
+
 
 function [theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6] =setDefaultParameters1()
     theta1 = pi/2;
@@ -88,6 +91,14 @@ function [theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6] =setDefau
     a5 = 0.5;
     a6=0.5;
 end
+
+
+function [parameter] =setDefaultParameters()
+    [theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6] = setDefaultParameters1();
+    parameter = [theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6];
+end
+
+
 
 function [H] = DenavitHartenberg(theta1, theta2, theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6);
     % Rz()*Tz()*Tx()*Rx()
