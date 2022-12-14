@@ -2,15 +2,13 @@
 close all;
 clear all;
 clc;
-
+% 
 % figure
 % [theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6] = setDefaultParameters1()
 % hold on
 % for theta1=0:pi/12:2*pi
+%     [x,y,z] = calcLocation(theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6);
 %     H = DenavitHartenberg(theta1, theta2, theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6);
-%     x = H(1,4)
-%     y =H(2,4)
-%     z = H(3,4)
 %     plot(x,y,'*');
 % end
 % hold off
@@ -19,51 +17,55 @@ clc;
 % [theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6] = setDefaultParameters1()
 % hold on
 % for theta2=0:pi/12:2*pi
+%     [x,y,z] = calcLocation(theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6);
+% 
 %     H = DenavitHartenberg(theta1, theta2, theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6);
-%     x = H(1,4)
-%     y =H(2,4)
-%     z = H(3,4)
+% 
 %     plot(x,y,'*');
 % end
 % hold off
 
 
 % Robot movement depending on drives
-% parameterNames={'theta1','theta2','theta3','theta4','theta5','theta6','a1','a2','a3','a4','a5','a6'}
-% for i=1:6
-%     figure
-%     parameter = setDefaultParameters()
-%     hold on
-%     for j=0:pi/12:2*pi
-%         parameter(i) = j
-%         H = DenavitHartenberg(parameter(1), parameter(2), parameter(3),parameter(4),parameter(5),parameter(6),parameter(7),parameter(8),parameter(9),parameter(10),parameter(11),parameter(12));
-%         x = H(1,4)
-%         y =H(2,4)
-%         z = H(3,4)
-%         plot(x,y,'*');
-%         title(parameterNames{i})
-%     end
-%     hold off
-% end
+parameterNames={'theta1','theta2','theta3','theta4','theta5','theta6','a1','a2','a3','a4','a5','a6'}
+for i=1:6
+    figure
+    parameter = setDefaultParameters();
+    hold on
+    for j=0:pi/12:2*pi
+        parameter(i) = j
+        [x,y,z] = calcLocation(parameter(1), parameter(2), parameter(3),parameter(4),parameter(5),parameter(6),parameter(7),parameter(8),parameter(9),parameter(10),parameter(11),parameter(12));
+
+        H = DenavitHartenberg(parameter(1), parameter(2), parameter(3),parameter(4),parameter(5),parameter(6),parameter(7),parameter(8),parameter(9),parameter(10),parameter(11),parameter(12));
+
+        plot(x,y,'*');
+        title(parameterNames{i})
+    end
+    hold off
+end
 
 
 figure
-[x,x,x,x,x,x,a1,a2,a3,a4,a5,a6] = setDefaultParameters1();
+[theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6] = setDefaultParameters1();
 hold on
 step = pi/3;
 for theta1=0:step:2*pi
     for theta2=0:step:2*pi
         for theta3=0:step:2*pi
             for theta4=0:step:2*pi
-                for theta5=0:step:2*pi
-                    for theta6=0:step:2*pi
+%                 for theta5=0:step:2*pi
+%                     for theta6=0:step:2*pi
+
+                        [x,y,z] = calcLocation(theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6);
                         H = DenavitHartenberg(theta1, theta2, theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6);
-                        x = H(1,4);
-                        y =H(2,4);
-                        z = H(3,4);
+%                         x = H(1,4);
+%                         y =H(2,4);
+%                         z = H(3,4);
+
+
                         plot3(x,y,z, '*');
-                    end
-                end
+%                     end
+%                 end
             end
         end
     end     
@@ -72,7 +74,11 @@ hold off
 
 
 
-
+function [x,y,z] = calcLocation(theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6)
+    x =a2 + a3 + a4 + a6*cos(theta5)*cos(theta6);
+    y = a6*cos(theta6)*sin(theta5)*(cos(theta4)*(cos(theta3)*(cos(theta1 - pi/2)*cos(theta2 + pi/2) - sin(theta1 - pi/2)*sin(theta2 + pi/2)) - sin(theta3)*(cos(theta1 - pi/2)*sin(theta2 + pi/2) + cos(theta2 + pi/2)*sin(theta1 - pi/2))) - sin(theta4)*(cos(theta3)*(cos(theta1 - pi/2)*sin(theta2 + pi/2) + cos(theta2 + pi/2)*sin(theta1 - pi/2)) + sin(theta3)*(cos(theta1 - pi/2)*cos(theta2 + pi/2) - sin(theta1 - pi/2)*sin(theta2 + pi/2)))) - a5*(cos(theta4)*(cos(theta3)*(cos(theta1 - pi/2)*sin(theta2 + pi/2) + cos(theta2 + pi/2)*sin(theta1 - pi/2)) + sin(theta3)*(cos(theta1 - pi/2)*cos(theta2 + pi/2) - sin(theta1 - pi/2)*sin(theta2 + pi/2))) + sin(theta4)*(cos(theta3)*(cos(theta1 - pi/2)*cos(theta2 + pi/2) - sin(theta1 - pi/2)*sin(theta2 + pi/2)) - sin(theta3)*(cos(theta1 - pi/2)*sin(theta2 + pi/2) + cos(theta2 + pi/2)*sin(theta1 - pi/2)))) - a6*sin(theta6)*(cos(theta4)*(cos(theta3)*(cos(theta1 - pi/2)*sin(theta2 + pi/2) + cos(theta2 + pi/2)*sin(theta1 - pi/2)) + sin(theta3)*(cos(theta1 - pi/2)*cos(theta2 + pi/2) - sin(theta1 - pi/2)*sin(theta2 + pi/2))) + sin(theta4)*(cos(theta3)*(cos(theta1 - pi/2)*cos(theta2 + pi/2) - sin(theta1 - pi/2)*sin(theta2 + pi/2)) - sin(theta3)*(cos(theta1 - pi/2)*sin(theta2 + pi/2) + cos(theta2 + pi/2)*sin(theta1 - pi/2)))) - a1*cos(theta1 - pi/2);
+    z = a5*(cos(theta4)*(cos(theta3)*(cos(theta1 - pi/2)*cos(theta2 + pi/2) - sin(theta1 - pi/2)*sin(theta2 + pi/2)) - sin(theta3)*(cos(theta1 - pi/2)*sin(theta2 + pi/2) + cos(theta2 + pi/2)*sin(theta1 - pi/2))) - sin(theta4)*(cos(theta3)*(cos(theta1 - pi/2)*sin(theta2 + pi/2) + cos(theta2 + pi/2)*sin(theta1 - pi/2)) + sin(theta3)*(cos(theta1 - pi/2)*cos(theta2 + pi/2) - sin(theta1 - pi/2)*sin(theta2 + pi/2)))) - a1*sin(theta1 - pi/2) + a6*sin(theta6)*(cos(theta4)*(cos(theta3)*(cos(theta1 - pi/2)*cos(theta2 + pi/2) - sin(theta1 - pi/2)*sin(theta2 + pi/2)) - sin(theta3)*(cos(theta1 - pi/2)*sin(theta2 + pi/2) + cos(theta2 + pi/2)*sin(theta1 - pi/2))) - sin(theta4)*(cos(theta3)*(cos(theta1 - pi/2)*sin(theta2 + pi/2) + cos(theta2 + pi/2)*sin(theta1 - pi/2)) + sin(theta3)*(cos(theta1 - pi/2)*cos(theta2 + pi/2) - sin(theta1 - pi/2)*sin(theta2 + pi/2)))) + a6*cos(theta6)*sin(theta5)*(cos(theta4)*(cos(theta3)*(cos(theta1 - pi/2)*sin(theta2 + pi/2) + cos(theta2 + pi/2)*sin(theta1 - pi/2)) + sin(theta3)*(cos(theta1 - pi/2)*cos(theta2 + pi/2) - sin(theta1 - pi/2)*sin(theta2 + pi/2))) + sin(theta4)*(cos(theta3)*(cos(theta1 - pi/2)*cos(theta2 + pi/2) - sin(theta1 - pi/2)*sin(theta2 + pi/2)) - sin(theta3)*(cos(theta1 - pi/2)*sin(theta2 + pi/2) + cos(theta2 + pi/2)*sin(theta1 - pi/2))));
+end
 
 
 
