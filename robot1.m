@@ -27,50 +27,73 @@ clc;
 
 
 % Robot movement depending on drives
-parameterNames={'theta1','theta2','theta3','theta4','theta5','theta6','a1','a2','a3','a4','a5','a6'}
+parameterNames={'theta1','theta2','theta3','theta4','theta5','theta6','a1','a2','a3','a4','a5','a6'};
 for i=1:6
     figure
     parameter = setDefaultParameters();
-    hold on
+
+    X=[];
+    Y=[];
+    Z=[];
     for j=0:pi/12:2*pi
-        parameter(i) = j
+        parameter(i) = j;
         [x,y,z] = calcLocation(parameter(1), parameter(2), parameter(3),parameter(4),parameter(5),parameter(6),parameter(7),parameter(8),parameter(9),parameter(10),parameter(11),parameter(12));
+%         H = DenavitHartenberg(parameter(1), parameter(2), parameter(3),parameter(4),parameter(5),parameter(6),parameter(7),parameter(8),parameter(9),parameter(10),parameter(11),parameter(12));
+        X=[X x];
+        Y = [Y y];
+        Z = [Z z];
 
-        H = DenavitHartenberg(parameter(1), parameter(2), parameter(3),parameter(4),parameter(5),parameter(6),parameter(7),parameter(8),parameter(9),parameter(10),parameter(11),parameter(12));
-
-        plot(x,y,'*');
-        title(parameterNames{i})
     end
-    hold off
+
+
+    t = tiledlayout('flow');
+    title(t,parameterNames{i})
+    
+    nexttile;
+    plot(X,Y,'.') ;
+    title('X,Y');
+
+    nexttile
+    plot(X,Z,'.');
+    title('X,Z')
+
+    nexttile;
+    plot(Y,Z,'.');
+    title('Y, Z');
+
+    nexttile;
+    plot3(X,Y,Z,'.');
+    title('X,Y,Z');
+
 end
 
 
-figure
-[theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6] = setDefaultParameters1();
-hold on
-step = pi/3;
-for theta1=0:step:2*pi
-    for theta2=0:step:2*pi
-        for theta3=0:step:2*pi
-            for theta4=0:step:2*pi
-%                 for theta5=0:step:2*pi
-%                     for theta6=0:step:2*pi
-
-                        [x,y,z] = calcLocation(theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6);
-                        H = DenavitHartenberg(theta1, theta2, theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6);
-%                         x = H(1,4);
-%                         y =H(2,4);
-%                         z = H(3,4);
-
-
-                        plot3(x,y,z, '*');
-%                     end
-%                 end
-            end
-        end
-    end     
-end
-hold off
+% figure
+% [theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6] = setDefaultParameters1();
+% hold on
+% step = pi/3;
+% for theta1=0:step:2*pi
+%     for theta2=0:step:2*pi
+%         for theta3=0:step:2*pi
+%             for theta4=0:step:2*pi
+% %                 for theta5=0:step:2*pi
+% %                     for theta6=0:step:2*pi
+% 
+%                         [x,y,z] = calcLocation(theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6);
+%                         H = DenavitHartenberg(theta1, theta2, theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6);
+% %                         x = H(1,4);
+% %                         y =H(2,4);
+% %                         z = H(3,4);
+% 
+% 
+%                         plot3(x,y,z, '*');
+% %                     end
+% %                 end
+%             end
+%         end
+%     end     
+% end
+% hold off
 
 
 
