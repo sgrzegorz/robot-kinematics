@@ -29,7 +29,6 @@ clc;
 % Robot movement depending on drives
 parameterNames={'theta1','theta2','theta3','theta4','theta5','theta6','a1','a2','a3','a4','a5','a6'};
 for i=1:6
-    figure
     parameter = setDefaultParameters();
 
     X=[];
@@ -45,7 +44,7 @@ for i=1:6
 
     end
 
-
+    figure
     t = tiledlayout('flow');
     title(t,parameterNames{i})
     
@@ -68,32 +67,51 @@ for i=1:6
 end
 
 
-% figure
-% [theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6] = setDefaultParameters1();
-% hold on
-% step = pi/3;
-% for theta1=0:step:2*pi
-%     for theta2=0:step:2*pi
-%         for theta3=0:step:2*pi
-%             for theta4=0:step:2*pi
-% %                 for theta5=0:step:2*pi
-% %                     for theta6=0:step:2*pi
-% 
-%                         [x,y,z] = calcLocation(theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6);
+[theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6] = setDefaultParameters1();
+step = pi/3;
+X= [];
+Y= [];
+Z= [];
+for theta1=0:step:2*pi
+    for theta2=0:step:2*pi
+        for theta3=0:step:2*pi
+            for theta4=0:step:2*pi
+                for theta5=0:step:2*pi
+                    for theta6=0:step:2*pi
+
+                        [x,y,z] = calcLocation(theta1,theta2,theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6);
+                        X = [X x];
+                        Y = [Y y];
+                        Z = [Z z];
 %                         H = DenavitHartenberg(theta1, theta2, theta3,theta4,theta5,theta6,a1,a2,a3,a4,a5,a6);
-% %                         x = H(1,4);
-% %                         y =H(2,4);
-% %                         z = H(3,4);
-% 
-% 
-%                         plot3(x,y,z, '*');
-% %                     end
-% %                 end
-%             end
-%         end
-%     end     
-% end
-% hold off
+%                         x = H(1,4);
+%                         y =H(2,4);
+%                         z = H(3,4);                      
+                    end
+                end
+            end
+        end
+    end     
+end
+figure(7);
+t = tiledlayout('flow');
+title(t,'theta 1-6')
+
+nexttile;
+plot(X,Y,'.') ;
+title('X,Y');
+
+nexttile
+plot(X,Z,'.');
+title('X,Z')
+
+nexttile;
+plot(Y,Z,'.');
+title('Y, Z');
+
+nexttile;
+plot3(X,Y,Z,'.');
+title('X,Y,Z');
 
 
 
